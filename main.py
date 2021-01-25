@@ -82,9 +82,9 @@ def email(voice):
         Browser.find_element_by_xpath('//*[@id="passp-field-passwd"]').send_keys(ui.sifre+Keys.ENTER)
         time.sleep(3)
         Browser.find_element_by_xpath('//*[@id="nb-1"]/body/div[2]/div[5]/div/div[3]/div[2]/div[3]/div/div[2]/div[1]/div[2]/span/a/span/span/span').click()
-        time.sleep(5)
+        time.sleep(3)
         Browser.find_element_by_tag_name('body').send_keys(Keys.CONTROL+'a')
-        time.sleep(5)
+        time.sleep(3)
         try:
             a=Browser.find_element_by_xpath('//*[@id="nb-1"]/body/div[2]/div[5]/div/div[3]/div[3]/div[2]/div[3]/div/span[1]').text
             sayac=int(a[:a.rfind("m")]) #loop sayısı yenı mesaj sayısı
@@ -103,7 +103,7 @@ def email(voice):
                 speak(f"Gönderen {user}. Başlığı {title} ,İçeriği {message}")
                 time.sleep(3)
                 Browser.find_element_by_xpath('//*[@id="nb-1"]/body/div[2]/div[5]/div/div[3]/div[3]/div[2]/div[5]/div[1]/div/div/div[2]/div/div[2]/div/div/div/a/div/span[1]/span[2]').click()
-                time.sleep(5)                  
+                time.sleep(3)                  
                 Browser.find_element_by_xpath('//*[@id="nb-1"]/body/div[2]/div[5]/div/div[3]/div[2]/div[3]/div/div[2]/div[1]/div[2]/span/a/span/span/span').click()
                 time.sleep(3)
 
@@ -206,12 +206,16 @@ def Browser(voice):
         search_field=browser.find_element_by_name("search_query")
         search_field.send_keys(ara + Keys.ENTER)
         browser.find_element_by_xpath('//*[@id="img"]').click()
+        print("youtube'da "+ara+" ile ilgili bulduğum video")
+        speak("youtube'da "+ara+" ile ilgili bulduğum video")
 
 
     elif "google"in voice: #Googl da arama yapar
         search = voice.replace("google'da",'')
         search = search.replace("google","")
         search=search.replace('ara','')
+        print("googlede "+search+" ile ilgili arama yapıyorum")
+        speak("googlede "+search+" ile ilgili arama yapıyorum")
         url = "https://google.com/search?q="+ search
         webbrowser.get().open(url)
         print(search+' hakkında bulduklarım')
@@ -224,8 +228,8 @@ def Browser(voice):
         voice=voice.replace("wikipedia","")
         voice=voice.replace("wikipediada","")
         voice=voice.replace("da","")
-        print(voice + '  hakkında bulduğum bilgiler. ')
-        speak(voice + '  hakkında bulduğum bilgiler. ')
+        print(voice + '  hakkında wikipedia da bulduğum bilgiler. ')
+        speak(voice + '  hakkında  wikipedia da bulduğum bilgiler. ')
         time.sleep(1)
         wikipedia.set_lang("tr")
         print(wikipedia.page(voice).title)
@@ -244,6 +248,7 @@ def request(voice):
             res = requests.get("https://ipinfo.io/")
             data=res.json()
             city  = data["city"]
+            print(city+ " hava durumu.")
             speak(city + " hava durumu.")
             url='http://api.openweathermap.org/data/2.5/weather?q='+city+',tr&APPID=0d801e98c17679151ee2879b676e239e'
             res= requests.get(url)
@@ -260,6 +265,7 @@ def request(voice):
         else:
 
             city = voice[0] #Söylediğiniz şehrin hava durumunu söyler 
+            print(city +" hava durumu.")
             speak(city + " hava durumu.")
             url='http://api.openweathermap.org/data/2.5/weather?q='+city+',tr&APPID=0d801e98c17679151ee2879b676e239e'
             res= requests.get(url)
@@ -307,7 +313,7 @@ def game(voice):
         print("siyahmı,  kırmızımı , yeşilmi")
         speak("Renk seçersen çevireceğim")
         speak("siyahmı,  kırmızımı , yeşilmi")
-        color=record("Rengini seçtiysen söylermisin")
+        color=record2("Rengini seçtiysen söylermisin")
         playsound.playsound('/home/ilkay/Desktop/staj-bot/audio/rulet.mp3')
         wincolor=random.choice(ui.rulet)
         if wincolor==color:
@@ -396,13 +402,14 @@ def wifi(voice):#Wifi servisini kontrol eder
             os.system('nmcli radio wifi on')
             print("wi-fi Açıldı")
             speak("wi-fi Açıldı")
+            
         elif "kapa" in onof:
             print("wi-fi servisi kapatılıyor")
             speak("wi-fi servisi kapatılıyor")
             os.system('nmcli radio wifi off')
             print("wi-fi Kapatıldı")
             speak("wi-fi Kapatıldı")
-
+    voice=" "
 def lock(voice):
     if "bilgisayarı" in voice:
         voice=voice.replace("bilgisayarı","")
@@ -596,18 +603,8 @@ def dosyaislemleri(voice): #Dosya ve klasör silme kopyalama oluşturma açma i�
                             os.system("gedit {}".format(ui.masaustu+ka[1])) #
                             print("{} Adlı metin belgesi açıldı".format(ka[1]))
                             speak("{} Adlı metin belgesi açıldı".format(ka[1]))
-        # elif "adsız" in ka:
-        #     elif "masaüstüne" in ka:
-        #         if "klasör" in ka:
-        #             if "oluştur" in ka:
-        #                 os.mkdir(ui.masaustu+ui.sayı)
-        #                 print('masaüstüne klasörün oluşturuldu {}'.format(ui.username))
-        #                 speak('masaüstüne klasörün oluşturuldu {}'.format(ui.username))
-        #         elif "metin" in ka:
-        #             if "oluştur" in ka:
-        #                 os.system(open(ui.masaustu+ui.sayı,"w"))
-        #                 print('masaüstüne metin belgen oluşturuldu {}'.format(ui.username))
-        #                 speak('masaüstüne metin belgen oluşturuldu {}'.format(ui.username))
+
+
 
 def run(voice): #Program açma kısayolları
     if "code" in voice:
@@ -706,15 +703,12 @@ def convert(sayı): #Hesap fonksiyonunda bir kelimesini tamsayıya çevirir
         return 1
     else:
         pass
-
+   
 def hesap(voice): #Toplama Çıkarma Bölme Çarpma Mood ve Üst alma
     voice=voice.replace("/"," bölü ")
     voice=voice.replace("-"," eksi ")
     voice=voice.replace("x"," kere ")
     voice=voice.split()
-    print(voice)
-    
-
 
     if "artı" in voice:
         if "bir" in voice:
@@ -750,8 +744,11 @@ def hesap(voice): #Toplama Çıkarma Bölme Çarpma Mood ve Üst alma
                 print(b-int(voice[0]))
                 speak(str(b-int(voice[0])))
         else:
-            print(int(voice[0])-int(voice[2]))
-            speak(str(int(voice[0])-int(voice[2])))
+            try:
+                print(int(voice[0])-int(voice[2]))
+                speak(str(int(voice[0])-int(voice[2])))
+            except:
+                pass
     elif "kere" in voice:
         if "bir" in voice:
             if voice[0]==voice[2]:
@@ -1060,36 +1057,37 @@ def musıc(voice): #Spotify oynat,durdur,önceki,sonraki,kariştırıcı,tekrar,
 
 
 
-if ui.username=="":
-    bos("değiştir")
-else:
-    halftime()
-    print("{}. Ben yaren sana nasıl yardımcı olabilirim".format(ui.username))
-    speak("{}. Ben yaren sana nasıl yardımcı olabilirim".format(ui.username))
-    while 1:
-        voice2=record2()
-        if "yaren" in voice2:
-            print("Buyur {}. nasıl yardımcı olabilirim?".format(ui.username))
-            speak("Buyur {}. nasıl yardımcı olabilirim?".format(ui.username))
-            while 1:
-                time.sleep(0.5)
-                voice = record2("listening....")
-                time.sleep(0.1)
-                print("Söyledigin kelime : "+voice)
-                email(voice)
-                musıc(voice)
-                newspaper(voice)
-                Browser(voice)
-                request(voice)
-                game(voice)
-                selamla(voice)
-                bos(voice)
-                wifi(voice)
-                lock(voice)
-                bluetooth(voice)
-                soundvolume(voice)
-                dosyaislemleri(voice)
-                run(voice)
-                yapılacaklar(voice)
-                hesap(voice)
-            
+# if ui.username=="":
+#     bos("değiştir")
+# else:
+#     halftime()
+#     print("{}. Ben yaren sana nasıl yardımcı olabilirim".format(ui.username))
+#     speak("{}. Ben yaren sana nasıl yardımcı olabilirim".format(ui.username))
+#     print("Yardımcı olabileceğim bir konu varsa seslenmen yeterli {}".format(ui.username))
+#     speak("Yardımcı olabileceğim bir konu varsa seslenmen yeterli {}".format(ui.username))
+#     while 1:
+#         voice2=record2()
+#         if "yaren" in voice2:
+#             print("Buyur {}. nasıl yardımcı olabilirim?".format(ui.username))
+#             speak("Buyur {}. nasıl yardımcı olabilirim?".format(ui.username))
+while 1:
+    time.sleep(0.5)
+    voice = record2("listening....")
+    time.sleep(0.1)
+    print("Söyledigin kelime : "+voice)
+    email(voice)
+    musıc(voice)
+    newspaper(voice)
+    Browser(voice)
+    request(voice)
+    game(voice)
+    selamla(voice)
+    bos(voice)
+    wifi(voice)
+    lock(voice)
+    bluetooth(voice)
+    soundvolume(voice)
+    dosyaislemleri(voice)
+    run(voice)
+    yapılacaklar(voice)
+    hesap(voice)
