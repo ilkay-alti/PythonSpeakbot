@@ -82,29 +82,30 @@ def email(voice):
         Browser.find_element_by_xpath('//*[@id="passp-field-passwd"]').send_keys(ui.sifre+Keys.ENTER)
         time.sleep(3)
         Browser.find_element_by_xpath('//*[@id="nb-1"]/body/div[2]/div[5]/div/div[3]/div[2]/div[3]/div/div[2]/div[1]/div[2]/span/a/span/span/span').click()
-        time.sleep(1)
+        time.sleep(5)
         Browser.find_element_by_tag_name('body').send_keys(Keys.CONTROL+'a')
-        time.sleep(2)
+        time.sleep(5)
         try:
             a=Browser.find_element_by_xpath('//*[@id="nb-1"]/body/div[2]/div[5]/div/div[3]/div[3]/div[2]/div[3]/div/span[1]').text
             sayac=int(a[:a.rfind("m")]) #loop sayısı yenı mesaj sayısı
-            time.sleep(1)
+            time.sleep(2)
             print("{} tane okunmamış mesajınız var".format(sayac))
             speak("{} tane okunmamış mesajınız var".format(sayac))
+            time.sleep(2)
             for i in range(sayac):
                 time.sleep(3)
-                user=Browser.find_element_by_xpath('//*[@id="nb-1"]/body/div[2]/div[6]/div/div[3]/div[3]/div[2]/div[5]/div[1]/div/div/div[2]/div/div[2]/div/div/div/a/div/span[1]/span[2]').text
-                title=Browser.find_element_by_xpath('//*[@id="nb-1"]/body/div[2]/div[6]/div/div[3]/div[3]/div[2]/div[5]/div[1]/div/div/div[2]/div/div[2]/div/div/div/a/div/span[2]/div/span/span[1]/span[1]').text
-                message=Browser.find_element_by_xpath('//*[@id="nb-1"]/body/div[2]/div[6]/div/div[3]/div[3]/div[2]/div[5]/div[1]/div/div/div[2]/div/div[2]/div/div/div/a/div/span[2]/div/span/span[2]/span').text
+                user=Browser.find_element_by_xpath('//*[@id="nb-1"]/body/div[2]/div[5]/div/div[3]/div[3]/div[2]/div[5]/div[1]/div/div/div[2]/div/div[2]/div/div/div/a/div/span[1]/span[2]').text
+                title=Browser.find_element_by_xpath('//*[@id="nb-1"]/body/div[2]/div[5]/div/div[3]/div[3]/div[2]/div[5]/div[1]/div/div/div[2]/div/div[2]/div/div/div/a/div/span[2]/div/span/span[1]/span[1]').text
+                message=Browser.find_element_by_xpath('//*[@id="nb-1"]/body/div[2]/div[5]/div/div[3]/div[3]/div[2]/div[5]/div[1]/div/div/div[2]/div/div[2]/div/div/div/a/div/span[2]/div/span/span[2]').text
                 print("{}. Mesajınız".format(i+1))
                 print(f"Gönderen {user}. Başlığı {title} ,İçeriği {message}")
                 speak("{}. Mesajınız".format(i+1))
                 speak(f"Gönderen {user}. Başlığı {title} ,İçeriği {message}")
                 time.sleep(3)
-                Browser.find_element_by_xpath('//*[@id="nb-1"]/body/div[2]/div[6]/div/div[3]/div[3]/div[2]/div[5]/div[1]/div/div/div[2]/div/div[2]/div/div/div/a/div/span[2]/div/span').click()
+                Browser.find_element_by_xpath('//*[@id="nb-1"]/body/div[2]/div[5]/div/div[3]/div[3]/div[2]/div[5]/div[1]/div/div/div[2]/div/div[2]/div/div/div/a/div/span[1]/span[2]').click()
+                time.sleep(5)                  
+                Browser.find_element_by_xpath('//*[@id="nb-1"]/body/div[2]/div[5]/div/div[3]/div[2]/div[3]/div/div[2]/div[1]/div[2]/span/a/span/span/span').click()
                 time.sleep(3)
-                Browser.find_element_by_xpath('//*[@id="nb-1"]/body/div[2]/div[6]/div/div[3]/div[2]/div[3]/div/div[2]/div[1]/div[2]/span/a/span/span/span').click()
-                time.sleep(2)
 
         except ValueError: #Yeni mesaj yoksa çalışır
             print("Okunmamış eposta yok.")
@@ -124,9 +125,9 @@ def email(voice):
         time.sleep(0.5)
         Browser.find_element_by_xpath('//*[@id="passp-field-passwd"]').send_keys(ui.sifre+Keys.ENTER)
         time.sleep(2)
-        Browser.get("https://mail.yandex.com.tr/#compose")
-        time.sleep(2)
-        Browser.implicitly_wait()
+        for i in range(1):
+            Browser.get("https://mail.yandex.com.tr/#compose")
+        
 
 
 def newspaper(voice):
@@ -378,7 +379,7 @@ def bos(voice):
     elif "seni seviyorum" in voice:
         print('hım sevmek nasıl birşey {} '.format(ui.username))
         speak('hım sevmek nasıl birşey {} '.format(ui.username))
-    elif "Saat kaç" in voice:
+    elif "saat kaç" in voice:
         print(datetime.now().strftime('%H:%M:%S'))
         speak(datetime.now().strftime('%H:%M:%S'))
     elif "yaren dur" in voice:
@@ -392,13 +393,13 @@ def wifi(voice):#Wifi servisini kontrol eder
         if "aç" in onof:
             print("wi-fi servisi açılıyor")
             speak("wi-fi servisi açılıyor")
-            os.system('nmcli radio wifi off')
+            os.system('nmcli radio wifi on')
             print("wi-fi Açıldı")
             speak("wi-fi Açıldı")
         elif "kapa" in onof:
             print("wi-fi servisi kapatılıyor")
             speak("wi-fi servisi kapatılıyor")
-            os.system('nmcli radio wifi on')
+            os.system('nmcli radio wifi off')
             print("wi-fi Kapatıldı")
             speak("wi-fi Kapatıldı")
 
@@ -408,7 +409,7 @@ def lock(voice):
         voice=voice.replace("bilgisayar","")
         voice=voice.replace("tekrar","")
         voice=voice.replace("yeniden","")
-        if "kilitle" in voice: #Bilgisayarı kilitler
+        if "kilitle" in voice: #Bilgisayarı kilitle
             print("sistem kilitleniyor.")
             speak("sistem kilitleniyor.")
             os.system('gnome-screensaver-command -l')
@@ -425,13 +426,13 @@ def lock(voice):
             speak(" Bilgisayarınız kapatılıp tekrar açılıyor")
             os.system("shutdown -P --reboot")
 
-        elif "kapat" in voice:
+        elif "kapat" in voice:  #bilgisayarı 1 saat sonra kapat
             voice=voice.replace("sonra","")
             voice=voice.replace("kapat","")
             voice=voice.replace("de","")
             voice1=voice.split()
 
-            if "şimdi" in voice1:  #Bilgisayarı şimdi kapatır
+            if "şimdi" in voice1:  #Bilgisayarı [şimdi,1dakika sonra,1 saat sonra,1 gün sonra] kapat
                 print("Sisteminiz şimdi Kapanıyor")
                 speak("Sisteminiz şimdi Kapanıyor")
                 os.system("shutdown -P now")
@@ -463,7 +464,7 @@ def lock(voice):
                 speak("Sisteminizin kapanış saati {}:{}")
 
 
-    elif "kapatmayı" in voice:  #Bilgisayarı zamanlanmış kapanmayı iptal eder
+    elif "kapatmayı" in voice:  #kapatmayı iptal et
         print(voice)
         voice=voice.replace("et","")
         voice=voice.replace("kapatmayı","")
@@ -475,7 +476,7 @@ def lock(voice):
             print("Kapatma işlemi iptal edildi")
             speak("Kapatma işlemi iptal edildi")
 
-def bluetooth(voice): #Bluetooth servisini kontrol eder
+def bluetooth(voice): #Bluetooth [ac,kapa]
     if "bluetooth" in voice:
         onof=voice.replace('bluetooth','')
         if "aç" in onof:
@@ -497,38 +498,39 @@ def soundvolume(voice): #Bilgisayarın ses seviyesini kontrol eder
     sound=voice.replace("ses","")
     sound=sound.replace("sesi","")
     sound=sound.replace("%","")
+    sound=sound.replace("yüzde","")
     sound1=sound.split()
-    print(sound1)
-    if "yükselt" in sound:
-        print("Ses %{} yükseltiliyor".format(sound1[1]))
-        speak("Ses %{} yükseltiliyor".format(sound1[1]))
-        os.system("amixer set 'Master' {}%+ - to increase max sound {}%".format(sound1[1],sound1[1]))
-        print("Ses seviyesini %{} yükselttim ".format(sound1[1]))
-        speak("Ses seviyesini %{} yükselttim ".format(sound1[1]))
-    elif "arttır" in sound:
-        print("Ses %{} arttırılıyor".format(sound1[1]))
-        speak("Ses %{} arttırılıyor".format(sound1[1]))
-        os.system("amixer set 'Master' {}%+ - to increase max sound {}%".format(sound1[1],sound1[1]))
-        print("Ses seviyesini %{} arttırdım ".format(sound1[1]))
-        speak("Ses seviyesini %{} arttırdım ".format(sound1[1]))
-    elif "düşür" in sound:
-        print("Ses %{} düşürülüyor".format(sound1[1]))
-        speak("Ses %{} düşürülüyor".format(sound1[1]))
-        os.system("amixer set 'Master' {}%- - to decrease max sound {}%".format(sound1[1],sound1[1]))
-        print("Ses seviyesini %{} düşürdüm ".format(sound1[1]))
-        speak("Ses seviyesini %{} düşürdüm ".format(sound1[1]))
-    elif "azalt" in sound:
-        print("Ses %{} azaltılıyor".format(sound1[1]))
-        speak("Ses %{} azaltılıyor".format(sound1[1]))
-        os.system("amixer set 'Master' {}%- - to decrease max sound {}%".format(sound1[1],sound1[1]))
-        print("Ses seviyesini %{} azalttım ".format(sound1[1]))
-        speak("Ses seviyesini %{} azalttım ".format(sound1[1]))
-    elif "yap" in sound:
-        print("Ses seviyesi %{} yapıldı".format(sound1[1]))
-        speak("Ses seviyesi %{} yapıldı".format(sound1[1]))
-        os.system("amixer set 'Master' {}% - to get {}% of the max sound".format(sound1[0],sound1[0]))
-        print("Ses seviyesini %{} yaptım ".format(sound1[1]))
-        speak("Ses seviyesini %{} yaptım ".format(sound1[1]))
+    if "spotify" not in sound1:    #'sesi', '%50', 'yap'
+        if "yükselt" in sound:
+            print("Ses %{} yükseltiliyor".format(sound1[1]))
+            speak("Ses %{} yükseltiliyor".format(sound1[1]))
+            os.system("amixer set 'Master' {}%+ - to increase max sound {}%".format(sound1[1],sound1[1]))
+            print("Ses seviyesini %{} yükselttim ".format(sound1[1]))
+            speak("Ses seviyesini %{} yükselttim ".format(sound1[1]))
+        elif "arttır" in sound:
+            print("Ses %{} arttırılıyor".format(sound1[1]))
+            speak("Ses %{} arttırılıyor".format(sound1[1]))
+            os.system("amixer set 'Master' {}%+ - to increase max sound {}%".format(sound1[1],sound1[1]))
+            print("Ses seviyesini %{} arttırdım ".format(sound1[1]))
+            speak("Ses seviyesini %{} arttırdım ".format(sound1[1]))
+        elif "düşür" in sound:
+            print("Ses %{} düşürülüyor".format(sound1[1]))
+            speak("Ses %{} düşürülüyor".format(sound1[1]))
+            os.system("amixer set 'Master' {}%- - to decrease max sound {}%".format(sound1[1],sound1[1]))
+            print("Ses seviyesini %{} düşürdüm ".format(sound1[1]))
+            speak("Ses seviyesini %{} düşürdüm ".format(sound1[1]))
+        elif "azalt" in sound:
+            print("Ses %{} azaltılıyor".format(sound1[1]))
+            speak("Ses %{} azaltılıyor".format(sound1[1]))
+            os.system("amixer set 'Master' {}%- - to decrease max sound {}%".format(sound1[1],sound1[1]))
+            print("Ses seviyesini %{} azalttım ".format(sound1[1]))
+            speak("Ses seviyesini %{} azalttım ".format(sound1[1]))
+        elif "yap" in sound:
+            print("Ses seviyesi %{} yapılıyor".format(sound1[1]))
+            speak("Ses seviyesi %{} yapılıyor".format(sound1[1]))
+            os.system("amixer set 'Master' {}% ".format(sound1[1]))
+            print("Ses seviyesini %{} yaptım ".format(sound1[1]))
+            speak("Ses seviyesini %{} yaptım ".format(sound1[1]))
 
 def dosyaislemleri(voice): #Dosya ve klasör silme kopyalama oluşturma açma işlemlerini yapar
     if "ad" in voice:
@@ -543,25 +545,25 @@ def dosyaislemleri(voice): #Dosya ve klasör silme kopyalama oluşturma açma i�
             if "masaüstüne" in ka:
                 if "klasör" in ka:
                     if "oluştur" in ka:
-                        os.mkdir(ui.masaustu+ka[1])
+                        os.mkdir(ui.masaustu+ka[1]) #'masaüstüne', 'samet', 'adlı', 'klasör', 'oluştur
                         print('masaüstüne {} adlı klasörün oluşturuldu'.format(ui.masaustu+ka[1]))
                         speak('masaüstüne {} adlı klasörün oluşturuldu'.format(ui.masaustu+ka[1]))
                 elif "metin" in ka:
                     if "oluştur" in ka:
-                        os.system(open(ui.masaustu+ka[1],"w"))
+                        os.system(open(ui.masaustu+ka[1]+".txt","w")) #'masaüstüne', 'yaku', 'adlı', 'metin', 'belgesi', 'oluştur'
                         print('masaüstüne {} adlı metin belgen oluşturuldu'.format(ui.masaustu+ka[1]))
                         speak('masaüstüne {} adlı metin belgen oluşturuldu'.format(ui.masaustu+ka[1]))
             elif "masaüstündeki" in ka:
                 if "klasörü" in ka:
-                    if "sil" in ka:
+                    if "sil" in ka: #'masaüstündeki', 'samet', 'adlı', 'klasörü', 'sil'
                         os.rmdir(ui.masaustu+ka[1])
                         print('masaüstündeki {} adlı klasörün silindi'.format(ui.masaustu+ka[1]))
                         speak('masaüstündeki {} adlı klasörün silindi'.format(ui.masaustu+ka[1]))
-                    elif"çoğalt" in ka:
+                    elif"çoğalt" in ka:  #'masaüstündeki', 'samet', 'adlı', 'klasörü', 'çoğalt
                         os.popen('cp -r {} {}'.format(ui.masaustu+ka[1],ui.masaustu+k2))
                         print('masaüstündeki {} adlı klasörün kopyası oluşturuldu'.format(ui.masaustu+ka[1]))
                         speak('masaüstündeki {} adlı klasörün kopyası oluşturuldu'.format(ui.masaustu+ka[1]))
-                    elif "aç" in ka:
+                    elif "aç" in ka:  #'masaüstündeki', 'samet', 'adlı', 'klasörü', 'aç'
                         os.system("nautilus {}".format(ui.masaustu+ka[1]))
                         print("{} adlı Klasör açıldı".format(ka[1]))
                         speak("{} adlı Klasör açıldı".format(ka[1]))
@@ -594,19 +596,18 @@ def dosyaislemleri(voice): #Dosya ve klasör silme kopyalama oluşturma açma i�
                             os.system("gedit {}".format(ui.masaustu+ka[1])) #
                             print("{} Adlı metin belgesi açıldı".format(ka[1]))
                             speak("{} Adlı metin belgesi açıldı".format(ka[1]))
-
-        else:
-            if "masaüstüne" in ka:
-                if "klasör" in ka:
-                    if "oluştur" in ka:
-                        os.mkdir(ui.masaustu+ui.sayı)
-                        print('masaüstüne klasörün oluşturuldu {}'.format(ui.username))
-                        speak('masaüstüne klasörün oluşturuldu {}'.format(ui.username))
-                elif "metin" in ka:
-                    if "oluştur" in ka:
-                        os.system(open(ui.masaustu+ui.sayı,"w"))
-                        print('masaüstüne metin belgen oluşturuldu {}'.format(ui.username))
-                        speak('masaüstüne metin belgen oluşturuldu {}'.format(ui.username))
+        # elif "adsız" in ka:
+        #     elif "masaüstüne" in ka:
+        #         if "klasör" in ka:
+        #             if "oluştur" in ka:
+        #                 os.mkdir(ui.masaustu+ui.sayı)
+        #                 print('masaüstüne klasörün oluşturuldu {}'.format(ui.username))
+        #                 speak('masaüstüne klasörün oluşturuldu {}'.format(ui.username))
+        #         elif "metin" in ka:
+        #             if "oluştur" in ka:
+        #                 os.system(open(ui.masaustu+ui.sayı,"w"))
+        #                 print('masaüstüne metin belgen oluşturuldu {}'.format(ui.username))
+        #                 speak('masaüstüne metin belgen oluşturuldu {}'.format(ui.username))
 
 def run(voice): #Program açma kısayolları
     if "code" in voice:
@@ -671,9 +672,11 @@ def halftime(): #Günün saatine göre selamlar sizi
         speak(f"iyi Geceler {ui.username} saat {saat}")
 
 def yapılacaklar(voice): #ToFoList uygulaması
-    if "yapılacak" in voice:
+    if "alışveriş" in voice:
         voice=voice.replace("yapılacak","")
         voice=voice.replace("listesine","")
+        voice=voice.replace("alışveriş","")
+        voice=voice.replace("listesinden","")
         voice1=voice.split()
 
 
@@ -705,93 +708,124 @@ def convert(sayı): #Hesap fonksiyonunda bir kelimesini tamsayıya çevirir
         pass
 
 def hesap(voice): #Toplama Çıkarma Bölme Çarpma Mood ve Üst alma
+    voice=voice.replace("/"," bölü ")
+    voice=voice.replace("-"," eksi ")
+    voice=voice.replace("x"," kere ")
     voice=voice.split()
+    print(voice)
+    
+
+
     if "artı" in voice:
         if "bir" in voice:
             if voice[0]==voice[2]:
                 a=convert(voice[0])
                 b=convert(voice[2])
                 print(a+b)
+                speak(str(a+b))
             elif voice[0]=="bir":
                 a=convert(voice[0])
                 print(a+int(voice[2]))
+                speak(str(a+int(voice[2])))
             elif voice[2]=="bir":
                 b=convert(voice[2])
                 print(b+int(voice[0]))
+                speak(str(b+int(voice[0])))
         else:
             print(int(voice[0])+int(voice[2]))
-    elif "eksi" in voice:
+            speak(str(int(voice[0])+int(voice[2])))
+    elif "eksi" in voice:  #'20', 'eksi', '10'
         if "bir" in voice:
             if voice[0]==voice[2]:
                 a=convert(voice[0])
                 b=convert(voice[2])
                 print(a-b)
+                speak(str(a-b))
             elif voice[0]=="bir":
                 a=convert(voice[0])
                 print(a-int(voice[2]))
+                speak(str(a-int(voice[2])))
             elif voice[2]=="bir":
                 b=convert(voice[2])
                 print(b-int(voice[0]))
+                speak(str(b-int(voice[0])))
         else:
             print(int(voice[0])-int(voice[2]))
+            speak(str(int(voice[0])-int(voice[2])))
     elif "kere" in voice:
         if "bir" in voice:
             if voice[0]==voice[2]:
                 a=convert(voice[0])
                 b=convert(voice[2])
                 print(a*b)
+                speak(str(a*b))
             elif voice[0]=="bir":
                 a=convert(voice[0])
                 print(a*int(voice[2]))
+                speak(str(a*int(voice[2])))
             elif voice[2]=="bir":
                 b=convert(voice[2])
                 print(int(voice[0])*1)
+                speak(str(int(voice[0])*1))
         else:
             print(int(voice[0])*int(voice[2]))
-    elif "bölü" in voice:
+            speak(str(int(voice[0])*int(voice[2])))
+    elif "bölü" in voice:  #['10', 'bölü', '20']
         if "bir" in voice:
             if voice[0]==voice[2]:
                 a=convert(voice[0])
                 b=convert(voice[2])
                 print(a/b)
+                speak(str(a/b))
             elif voice[0]=="bir":
                 a=convert(voice[0])
                 print(a/int(voice[2]))
+                speak(str(a/int(voice[2])))
             elif voice[2]=="bir":
                 b=convert(voice[2])
                 print(int(voice[0])/b)
+                speak(str(int(voice[0])/b))
         else:
             print(int(voice[0])/int(voice[2]))
+            speak(str(int(voice[0])/int(voice[2])))
     elif"üstü" in voice:
         if "bir" in voice:
             if voice[0]==voice[2]:
                 a=convert(voice[0])
                 b=convert(voice[2])
                 print(a**b)
+                speak(str(a**b))
             elif voice[0]=="bir":
                 a=convert(voice[0])
                 print(a**int(voice[2]))
+                speak(str(a**int(voice[2])))
             elif voice[2]=="bir":
                 b=convert(voice[2])
                 print(int(voice[0])**b)
+                speak(str(int(voice[0])**b))
         else:
             print(int(voice[0])**int(voice[2]))
+            speak(str(int(voice[0])**int(voice[2])))
     elif"mod" in voice:
         if "bir" in voice:
             if voice[0]==voice[2]:
                 a=convert(voice[0])
                 b=convert(voice[2])
                 print(a%b)
+                speak(str(a%b))
             elif voice[0]=="bir":
                 a=convert(voice[0])
                 print(a%int(voice[2]))
+                speak(str(a%int(voice[2])))
             elif voice[2]=="bir":
                 b=convert(voice[2])
                 print(int(voice[0])%b)
+                speak(str(int(voice[0])%b))
         else:
             print(int(voice[0])%int(voice[2]))
+            speak(str(int(voice[0])%int(voice[2])))
 
-def token_generate(): #Spotify Token üretir
+def token_generate(): #Spot-ify Token üretir
   
     auth_manager = SpotifyOAuth(
         client_id=ui.client_id,
@@ -829,27 +863,7 @@ def musıc(voice): #Spotify oynat,durdur,önceki,sonraki,kariştırıcı,tekrar,
     data = "{\"context_uri\":\"spotify:album:5ht7ItJgpBH7W6vJ5BqpPr\",\"offset\":{\"position\":5},\"position_ms\":0}"
     
     if "spotify" in voice:
-        if "sesi" in voice: #Spotify uygulama sesinizi ayarlarsınız
-            voice=voice.replace("%","")
-            voice=voice.replace("yap","")
-            voice=voice.replace("sesi","")
-            voice=voice.replace("spotify","")
-            voice=voice.split()
-            a=voice[0]
-            r=requests.put(f'https://api.spotify.com/v1/me/player/volume?volume_percent='+a,headers=spoti_header)
-            if r.status_code==204:
-                print(f'Spotify ses seviyesi %{a} yapıldı')
-                speak(f'Spotify ses seviyesi %{a} yapıldı')
-            elif r.status_code==404:
-                print('Spotifyınız açık değil')
-                speak('Spotifyınız açık değil')
-            elif r.status_code==401:
-                print("token oluşturma ekranı açıldı")
-                speak("token oluşturma ekranı açıldı")
-                print("tokeninizi bana verirmisiniz")
-                speak("tokeninizi bana verirmisiniz")
-                token_generate()
-        elif 'durdur' in voice: #Spotify Çalınan şarkıyı durdurur
+        if 'durdur' in voice: #Spotify durdur
             r=requests.put('https://api.spotify.com/v1/me/player/pause',headers=spoti_header)
             if r.status_code==204:
                 print("şarkı duraklatıldı")
@@ -866,7 +880,32 @@ def musıc(voice): #Spotify oynat,durdur,önceki,sonraki,kariştırıcı,tekrar,
                 print("tokeninizi bana verirmisiniz")
                 speak("tokeninizi bana verirmisiniz")
                 token_generate()
-        elif "çalınan" in voice: #Spotify çalınan şarkının sanatçısının adı ve şarkının adını yazdırır
+
+
+        elif "sesi" in voice: #'spotify', 'sesi', '20', 'yap
+            voice=voice.replace("%","")
+            voice=voice.replace("yap","")
+            voice=voice.replace("sesi","")
+            voice=voice.replace("sesli","")
+            voice=voice.replace("spotify","")
+            voice=voice.replace("karıştıra","karıştırı")
+            voice=voice.split()
+            a=voice[0]
+            r=requests.put(f'https://api.spotify.com/v1/me/player/volume?volume_percent='+a,headers=spoti_header)
+            if r.status_code==204:
+                print(f'Spotify ses seviyesi %{a} yapıldı')
+                speak(f'Spotify ses seviyesi %{a} yapıldı')
+            elif r.status_code==404:
+                print('Spotifyınız açık değil')
+                speak('Spotifyınız açık değil')
+            elif r.status_code==401:
+                print("token oluşturma ekranı açıldı")
+                speak("token oluşturma ekranı açıldı")
+                print("tokeninizi bana verirmisiniz")
+                speak("tokeninizi bana verirmisiniz")
+                token_generate()
+        
+        elif "çalınan" in voice: #Spotify çalınan
             r=requests.get('https://api.spotify.com/v1/me/player/currently-playing?market=TR&additional_types=episode',headers=spoti_header)
             a=r.json()
             artist_name=(a['item']['album']['artists'][0]['name'])
@@ -885,7 +924,7 @@ def musıc(voice): #Spotify oynat,durdur,önceki,sonraki,kariştırıcı,tekrar,
                 token_generate()
 
 
-        elif "oynat" in voice: #Spotify tanımlı playlıstınızı oynatır
+        elif "oynat" in voice: #Spotify oynat
             r=requests.put('https://api.spotify.com/v1/me/player/play',headers=spoti_header,data=data)
 
             if r.status_code==204:
@@ -901,7 +940,7 @@ def musıc(voice): #Spotify oynat,durdur,önceki,sonraki,kariştırıcı,tekrar,
                 speak("tokeninizi bana verirmisiniz")
                 token_generate()
 
-        elif "sonraki" in voice: #Spotify sonraki şarkıya geçirir
+        elif "sonraki" in voice: #Spotify sonraki 
             r=requests.post('https://api.spotify.com/v1/me/player/next',headers=spoti_header)
             print(r.status_code)
             if r.status_code==204:
@@ -917,7 +956,7 @@ def musıc(voice): #Spotify oynat,durdur,önceki,sonraki,kariştırıcı,tekrar,
                 speak("tokeninizi bana verirmisiniz")
                 token_generate()
 
-        elif "önceki" in voice: #Spotify önceki şarkıya geçirir
+        elif "önceki" in voice: #Spotify önceki
             r=requests.post('https://api.spotify.com/v1/me/player/previous',headers=spoti_header)
             if r.status_code==204:
                 print("önceki şarkıya gectı")
@@ -934,8 +973,7 @@ def musıc(voice): #Spotify oynat,durdur,önceki,sonraki,kariştırıcı,tekrar,
                 speak("tokeninizi bana verirmisiniz")
                 token_generate()
 
-
-        elif "karıştırı" in voice: #Spotify kariştırıcı ayarlarını yapar
+        elif "karıştır" in voice: #['spotify', 'karıştırma', 'kapat']['kapat]
             if "aç" in voice:
                 r=requests.put('https://api.spotify.com/v1/me/player/shuffle?state=true',headers=spoti_header)
                 if r.status_code==204:
@@ -1039,6 +1077,7 @@ else:
                 time.sleep(0.1)
                 print("Söyledigin kelime : "+voice)
                 email(voice)
+                musıc(voice)
                 newspaper(voice)
                 Browser(voice)
                 request(voice)
@@ -1053,4 +1092,4 @@ else:
                 run(voice)
                 yapılacaklar(voice)
                 hesap(voice)
-                musıc(voice)
+            
